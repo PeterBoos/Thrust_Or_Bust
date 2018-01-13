@@ -2,12 +2,16 @@
 
 namespace Assets
 {
-    public class Rocket : MonoBehaviour {
+    public class Rocket : MonoBehaviour
+    {
+        private Rigidbody rigidBody;
+        private AudioSource thrusterSound;
 
         // Use this for initialization
         void Start ()
         {
-		
+            rigidBody = GetComponent<Rigidbody>();
+            thrusterSound = GetComponent<AudioSource>();
         }
 	
         // Update is called once per frame
@@ -20,7 +24,19 @@ namespace Assets
         {
             if (Input.GetKey(KeyCode.Space))
             {
-                print("Space pressed");
+                rigidBody.AddRelativeForce(Vector3.up);
+                if (!thrusterSound.isPlaying)
+                {
+                    thrusterSound.Play();
+                }
+
+            }
+            else
+            {
+                if (thrusterSound.isPlaying)
+                {
+                    thrusterSound.Stop();
+                }
             }
 
             if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
@@ -29,11 +45,11 @@ namespace Assets
             }
             else if (Input.GetKey(KeyCode.A))
             {
-                print("Left");
+                transform.Rotate(Vector3.forward);
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                print("Right");
+                transform.Rotate(-Vector3.forward);
             }
         }
     }
