@@ -4,6 +4,9 @@ namespace Assets
 {
     public class Rocket : MonoBehaviour
     {
+        public float ThrusterPower = 1;
+        public float RotationSpeed = 1;
+
         private Rigidbody rigidBody;
         private AudioSource thrusterSound;
 
@@ -22,14 +25,19 @@ namespace Assets
 
         private void ProcessInput()
         {
+            Thrust();
+            Rotate();
+        }
+
+        private void Thrust()
+        {
             if (Input.GetKey(KeyCode.Space))
             {
-                rigidBody.AddRelativeForce(Vector3.up);
+                rigidBody.AddRelativeForce(Vector3.up * ThrusterPower * Time.deltaTime);
                 if (!thrusterSound.isPlaying)
                 {
                     thrusterSound.Play();
                 }
-
             }
             else
             {
@@ -38,6 +46,11 @@ namespace Assets
                     thrusterSound.Stop();
                 }
             }
+        }
+
+        private void Rotate()
+        {
+            rigidBody.freezeRotation = true;  // take manual control of rotation
 
             if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
             {
@@ -45,12 +58,14 @@ namespace Assets
             }
             else if (Input.GetKey(KeyCode.A))
             {
-                transform.Rotate(Vector3.forward);
+                transform.Rotate(Vector3.forward * RotationSpeed * Time.deltaTime);
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                transform.Rotate(-Vector3.forward);
+                transform.Rotate(-Vector3.forward * RotationSpeed * Time.deltaTime);
             }
+
+            rigidBody.freezeRotation = false;  // resume physics control of rotation 
         }
     }
 }
