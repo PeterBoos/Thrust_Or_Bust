@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
-namespace Assets
+namespace Assets.Scripts
 {
     public class Rocket : MonoBehaviour
     {
@@ -28,13 +29,18 @@ namespace Assets
             switch (collision.gameObject.tag)
             {
                 case "Friendly":
-                    print("OK");
+                    // do nothing
+                    break;
+                case "Finish":
+                    print("WIN");
+                    SceneManager.LoadScene(1);
                     break;
                 case "PowerUp":
                     print("COLLECT");
                     break;
                 default:
                     print("DEAD");
+                    SceneManager.LoadScene(0);
                     break;
             }
         }
