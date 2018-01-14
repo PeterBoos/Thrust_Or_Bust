@@ -7,6 +7,7 @@ namespace Assets.Scripts
     {
         public float ThrusterPower = 1;
         public float RotationSpeed = 1;
+        public int Level = 0;
 
         private Rigidbody rigidBody;
         private AudioSource thrusterSound;
@@ -33,14 +34,14 @@ namespace Assets.Scripts
                     break;
                 case "Finish":
                     print("WIN");
-                    SceneManager.LoadScene(1);
+                    LoadNextLevel();
                     break;
                 case "PowerUp":
                     print("COLLECT");
                     break;
                 default:
                     print("DEAD");
-                    SceneManager.LoadScene(0);
+                    GameOver();
                     break;
             }
         }
@@ -88,6 +89,21 @@ namespace Assets.Scripts
             }
 
             rigidBody.freezeRotation = false;  // resume physics control of rotation 
+        }
+
+        private void LoadNextLevel()
+        {
+            LoadLevel(Level++);
+        }
+
+        private void GameOver()
+        {
+            LoadLevel(Level = 0);
+        }
+
+        private void LoadLevel(int number)
+        {
+            SceneManager.LoadScene(number);
         }
     }
 }
