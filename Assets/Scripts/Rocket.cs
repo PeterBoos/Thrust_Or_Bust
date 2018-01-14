@@ -8,6 +8,7 @@ namespace Assets.Scripts
         public float ThrusterPower = 1;
         public float RotationSpeed = 1;
         public int Level = 0;
+        public int NumberOfLevels = 0;
 
         private Rigidbody rigidBody;
         private AudioSource thrusterSound;
@@ -17,6 +18,7 @@ namespace Assets.Scripts
         {
             rigidBody = GetComponent<Rigidbody>();
             thrusterSound = GetComponent<AudioSource>();
+            NumberOfLevels = SceneManager.sceneCountInBuildSettings;
         }
 	
         // Update is called once per frame
@@ -33,14 +35,12 @@ namespace Assets.Scripts
                     // do nothing
                     break;
                 case "Finish":
-                    print("WIN");
                     LoadNextLevel();
                     break;
                 case "PowerUp":
                     print("COLLECT");
                     break;
                 default:
-                    print("DEAD");
                     GameOver();
                     break;
             }
@@ -93,12 +93,26 @@ namespace Assets.Scripts
 
         private void LoadNextLevel()
         {
-            LoadLevel(Level++);
+            Level++;
+            if (Level == NumberOfLevels)
+            {
+                Win();
+            }
+            else
+            {
+                LoadLevel(Level);
+            }
         }
 
         private void GameOver()
         {
-            LoadLevel(Level = 0);
+            Level = 0;
+            LoadLevel(Level);
+        }
+
+        private void Win()
+        {
+            print("You win the game!");
         }
 
         private void LoadLevel(int number)
