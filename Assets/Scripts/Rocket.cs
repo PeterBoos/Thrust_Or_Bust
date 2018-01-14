@@ -23,6 +23,22 @@ namespace Assets
             ProcessInput();
         }
 
+        void OnCollisionEnter(Collision collision)
+        {
+            switch (collision.gameObject.tag)
+            {
+                case "Friendly":
+                    print("OK");
+                    break;
+                case "PowerUp":
+                    print("COLLECT");
+                    break;
+                default:
+                    print("DEAD");
+                    break;
+            }
+        }
+
         private void ProcessInput()
         {
             Thrust();
