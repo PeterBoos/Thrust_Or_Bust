@@ -3,121 +3,133 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
 {
-    public class Rocket : MonoBehaviour
-    {
-        public float ThrusterPower = 1;
-        public float RotationSpeed = 1;
-        public int Level = 0;
-        public int NumberOfLevels = 0;
+	public class Rocket : MonoBehaviour
+	{
+		public float ThrusterPower = 1;
+		public float RotationSpeed = 1;
+		public int Level = 0;
+		public int NumberOfLevels = 0;
 
-        private Rigidbody rigidBody;
-        private AudioSource thrusterSound;
+		private Rigidbody rigidBody;
+		private AudioSource thrusterSound;
 
-        // Use this for initialization
-        void Start ()
-        {
-            rigidBody = GetComponent<Rigidbody>();
-            thrusterSound = GetComponent<AudioSource>();
-            NumberOfLevels = SceneManager.sceneCountInBuildSettings;
-        }
+		enum State { Alive, Dying, Transending}
+		private State state = State.Alive;
+
+		// Use this for initialization
+		void Start ()
+		{
+			rigidBody = GetComponent<Rigidbody>();
+			thrusterSound = GetComponent<AudioSource>();
+			NumberOfLevels = SceneManager.sceneCountInBuildSettings;
+		}
 	
-        // Update is called once per frame
-        void Update ()
-        {
-            ProcessInput();
-        }
+		// Update is called once per frame
+		void Update ()
+		{
+			ProcessInput();
+		}
 
-        void OnCollisionEnter(Collision collision)
-        {
-            switch (collision.gameObject.tag)
-            {
-                case "Friendly":
-                    // do nothing
-                    break;
-                case "Finish":
-                    LoadNextLevel();
-                    break;
-                case "PowerUp":
-                    print("COLLECT");
-                    break;
-                default:
-                    GameOver();
-                    break;
-            }
-        }
+		void OnCollisionEnter(Collision collision)
+		{
+			if (state != State.Alive) return;
 
-        private void ProcessInput()
-        {
-            Thrust();
-            Rotate();
-        }
+			switch (collision.gameObject.tag)
+			{
+				case "Friendly":
+					// do nothing
+					break;
+				case "Finish":
+					state = State.Transending;
+					Invoke("LoadNextScene", 3f);
+					break;
+				case "PowerUp":
+					print("COLLECT");
+					break;
+				default:
+					state = State.Dying;
+					Invoke("GameOver", 3f);
+					break;
+			}
+		}
 
-        private void Thrust()
-        {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                rigidBody.AddRelativeForce(Vector3.up * ThrusterPower * Time.deltaTime);
-                if (!thrusterSound.isPlaying)
-                {
-                    thrusterSound.Play();
-                }
-            }
-            else
-            {
-                if (thrusterSound.isPlaying)
-                {
-                    thrusterSound.Stop();
-                }
-            }
-        }
+		private void ProcessInput()
+		{
+			if (state == State.Dying || state == State.Transending)
+			{
+				thrusterSound.Stop();
+				return;
+			}
+			Thrust();
+			Rotate();
+		}
 
-        private void Rotate()
-        {
-            rigidBody.freezeRotation = true;  // take manual control of rotation
+		private void Thrust()
+		{
+			if (Input.GetKey(KeyCode.Space))
+			{
+				rigidBody.AddRelativeForce(Vector3.up * ThrusterPower * Time.deltaTime);
+				if (!thrusterSound.isPlaying)
+				{
+					thrusterSound.Play();
+				}
+			}
+			else
+			{
+				if (thrusterSound.isPlaying)
+				{
+					thrusterSound.Stop();
+				}
+			}
+		}
 
-            if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
-            {
-                // Do nothing
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                transform.Rotate(Vector3.forward * RotationSpeed * Time.deltaTime);
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                transform.Rotate(-Vector3.forward * RotationSpeed * Time.deltaTime);
-            }
+		private void Rotate()
+		{
+			rigidBody.freezeRotation = true;  // take manual control of rotation
 
-            rigidBody.freezeRotation = false;  // resume physics control of rotation 
-        }
+			if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+			{
+				// Do nothing
+			}
+			else if (Input.GetKey(KeyCode.A))
+			{
+				transform.Rotate(Vector3.forward * RotationSpeed * Time.deltaTime);
+			}
+			else if (Input.GetKey(KeyCode.D))
+			{
+				transform.Rotate(-Vector3.forward * RotationSpeed * Time.deltaTime);
+			}
 
-        private void LoadNextLevel()
-        {
-            Level++;
-            if (Level == NumberOfLevels)
-            {
-                Win();
-            }
-            else
-            {
-                LoadLevel(Level);
-            }
-        }
+			rigidBody.freezeRotation = false;  // resume physics control of rotation 
+		}
 
-        private void GameOver()
-        {
-            Level = 0;
-            LoadLevel(Level);
-        }
+		private void LoadNextScene()
+		{
+			Level++;
+			if (Level == NumberOfLevels)
+			{
+				Win();
+			}
+			else
+			{
+				LoadLevel(Level);
+			}
+		}
 
-        private void Win()
-        {
-            print("You win the game!");
-        }
+		private void GameOver()
+		{
+			Level = 0;
+			LoadLevel(Level);
+		}
 
-        private void LoadLevel(int number)
-        {
-            SceneManager.LoadScene(number);
-        }
-    }
+		private void Win()
+		{
+			print("You win the game!");
+		}
+
+		private void LoadLevel(int number)
+		{
+			SceneManager.LoadScene(number);
+		}
+	}
 }
