@@ -9,9 +9,12 @@ namespace Assets.Scripts
 		public float RotationSpeed = 1;
 		public int Level = 0;
 		public int NumberOfLevels = 0;
+		public AudioClip MainEngine;
+		public AudioClip Death;
+		public AudioClip Success;
 
 		private Rigidbody rigidBody;
-		private AudioSource thrusterSound;
+		private AudioSource audioSource;
 
 		enum State { Alive, Dying, Transending}
 		private State state = State.Alive;
@@ -20,7 +23,7 @@ namespace Assets.Scripts
 		void Start ()
 		{
 			rigidBody = GetComponent<Rigidbody>();
-			thrusterSound = GetComponent<AudioSource>();
+			audioSource = GetComponent<AudioSource>();
 			NumberOfLevels = SceneManager.sceneCountInBuildSettings;
 		}
 	
@@ -39,51 +42,69 @@ namespace Assets.Scripts
 				case "Friendly":
 					// do nothing
 					break;
-				case "Finish":
-					state = State.Transending;
-					Invoke("LoadNextScene", 3f);
-					break;
-				case "PowerUp":
+                case "Finish":
+                    StartSuccessSequence();
+                    break;
+                case "PowerUp":
 					print("COLLECT");
 					break;
-				default:
-					state = State.Dying;
-					Invoke("GameOver", 3f);
-					break;
-			}
+                default:
+                    StartDeathSequence();
+                    break;
+            }
 		}
 
-		private void ProcessInput()
+        private void StartSuccessSequence()
+        {
+            state = State.Transending;
+            audioSource.Stop();
+            audioSource.PlayOneShot(Success);
+            Invoke("LoadNextScene", 3f);
+        }
+
+        private void StartDeathSequence()
+        {
+            state = State.Dying;
+            audioSource.Stop();
+            audioSource.PlayOneShot(Death);
+            Invoke("GameOver", 3f);
+        }
+
+        private void ProcessInput()
 		{
-			if (state == State.Dying || state == State.Transending)
-			{
-				thrusterSound.Stop();
-				return;
-			}
-			Thrust();
-			Rotate();
+            if (state == State.Dying || state == State.Transending)
+            {
+                return;
+            }
+            RespondToThrustInput();
+			RespondToRotateInput();
 		}
 
-		private void Thrust()
+		private void RespondToThrustInput()
 		{
 			if (Input.GetKey(KeyCode.Space))
 			{
-				rigidBody.AddRelativeForce(Vector3.up * ThrusterPower * Time.deltaTime);
-				if (!thrusterSound.isPlaying)
-				{
-					thrusterSound.Play();
-				}
+				ApplyThrust();
 			}
 			else
 			{
-				if (thrusterSound.isPlaying)
+				if (audioSource.isPlaying)
 				{
-					thrusterSound.Stop();
+					audioSource.Stop();
 				}
 			}
 		}
 
-		private void Rotate()
+		private void ApplyThrust()
+		{
+			rigidBody.AddRelativeForce(Vector3.up * ThrusterPower * Time.deltaTime);
+			if (!audioSource.isPlaying)
+			{
+				audioSource.PlayOneShot(MainEngine);
+			}
+		}
+
+		private void RespondToRotateInput()
 		{
 			rigidBody.freezeRotation = true;  // take manual control of rotation
 
