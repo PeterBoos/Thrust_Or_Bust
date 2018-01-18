@@ -9,11 +9,16 @@ namespace Assets.Scripts
 		public float RotationSpeed = 1;
 		public int Level = 0;
 		public int NumberOfLevels = 0;
-		public AudioClip MainEngine;
+
+        public AudioClip MainEngine;
 		public AudioClip Death;
 		public AudioClip Success;
 
-		private Rigidbody rigidBody;
+	    public ParticleSystem MainEngineParticles;
+	    public ParticleSystem DeathParticles;
+	    public ParticleSystem SuccessParticles;
+
+        private Rigidbody rigidBody;
 		private AudioSource audioSource;
 
 		enum State { Alive, Dying, Transending}
@@ -59,6 +64,7 @@ namespace Assets.Scripts
             state = State.Transending;
             audioSource.Stop();
             audioSource.PlayOneShot(Success);
+            SuccessParticles.Play();
             Invoke("LoadNextScene", 3f);
         }
 
@@ -67,6 +73,7 @@ namespace Assets.Scripts
             state = State.Dying;
             audioSource.Stop();
             audioSource.PlayOneShot(Death);
+            DeathParticles.Play();
             Invoke("GameOver", 3f);
         }
 
@@ -91,7 +98,8 @@ namespace Assets.Scripts
 				if (audioSource.isPlaying)
 				{
 					audioSource.Stop();
-				}
+				    MainEngineParticles.Stop();
+                }
 			}
 		}
 
@@ -102,6 +110,7 @@ namespace Assets.Scripts
 			{
 				audioSource.PlayOneShot(MainEngine);
 			}
+            MainEngineParticles.Play();
 		}
 
 		private void RespondToRotateInput()
