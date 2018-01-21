@@ -5,10 +5,11 @@ namespace Assets.Scripts
 {
 	public class Rocket : MonoBehaviour
 	{
-		public float ThrusterPower = 1;
-		public float RotationSpeed = 1;
+		public float ThrusterPower = 1f;
+		public float RotationSpeed = 1f;
 		public int Level = 0;
 		public int NumberOfLevels = 0;
+	    public float LevelLoadDelay = 3f;
 
         public AudioClip MainEngine;
 		public AudioClip Death;
@@ -65,7 +66,7 @@ namespace Assets.Scripts
             audioSource.Stop();
             audioSource.PlayOneShot(Success);
             SuccessParticles.Play();
-            Invoke("LoadNextScene", 3f);
+            Invoke("LoadNextScene", LevelLoadDelay);
         }
 
         private void StartDeathSequence()
@@ -74,7 +75,7 @@ namespace Assets.Scripts
             audioSource.Stop();
             audioSource.PlayOneShot(Death);
             DeathParticles.Play();
-            Invoke("GameOver", 3f);
+            Invoke("GameOver", LevelLoadDelay);
         }
 
         private void ProcessInput()
