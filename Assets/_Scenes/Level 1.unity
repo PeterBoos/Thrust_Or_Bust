@@ -573,6 +573,16 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: 0.707767
       objectReference: {fileID: 0}
+    - target: {fileID: 114917402244396314, guid: 453bc1a8b15603847a27f0dff25f88f1,
+        type: 2}
+      propertyPath: DebugOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114917402244396314, guid: 453bc1a8b15603847a27f0dff25f88f1,
+        type: 2}
+      propertyPath: collisionsAreDisabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 453bc1a8b15603847a27f0dff25f88f1, type: 2}
   m_IsPrefabParent: 0

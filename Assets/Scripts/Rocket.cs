@@ -25,6 +25,8 @@ namespace Assets.Scripts
 		enum State { Alive, Dying, Transending}
 		private State state = State.Alive;
 
+	    public bool collisionsAreDisabled = false;
+
 		// Use this for initialization
 		void Start ()
 		{
@@ -42,6 +44,7 @@ namespace Assets.Scripts
 		void OnCollisionEnter(Collision collision)
 		{
 			if (state != State.Alive) return;
+		    if (collisionsAreDisabled) return;
 
 			switch (collision.gameObject.tag)
 			{
@@ -86,6 +89,11 @@ namespace Assets.Scripts
             }
             RespondToThrustInput();
 			RespondToRotateInput();
+
+		    if (Debug.isDebugBuild)
+		    {
+		        RespondToDebugInput();
+		    }
 		}
 
 		private void RespondToThrustInput()
@@ -136,14 +144,20 @@ namespace Assets.Scripts
 
 		private void LoadNextScene()
 		{
-			Level++;
-			if (Level == NumberOfLevels)
+		    var levelIndex = SceneManager.GetActiveScene().buildIndex;
+		    var nextLevelIndex = levelIndex + 1;
+
+            print("Current level: " + levelIndex);
+            print("Next level: " + nextLevelIndex);
+
+            if (nextLevelIndex == NumberOfLevels)
 			{
-				Win();
+				//Win();
+                LoadLevel(0);
 			}
 			else
 			{
-				LoadLevel(Level);
+				LoadLevel(nextLevelIndex);
 			}
 		}
 
@@ -162,5 +176,18 @@ namespace Assets.Scripts
 		{
 			SceneManager.LoadScene(number);
 		}
+
+	    private void RespondToDebugInput()
+	    {
+	        if (Input.GetKey(KeyCode.L))
+	        {
+	            LoadNextScene();
+	        }
+
+	        if (Input.GetKey(KeyCode.C))
+	        {
+	            collisionsAreDisabled = !collisionsAreDisabled;
+	        }
+	    }
 	}
 }
