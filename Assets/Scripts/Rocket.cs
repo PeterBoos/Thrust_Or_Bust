@@ -152,8 +152,8 @@ namespace Assets.Scripts
 
             if (nextLevelIndex == NumberOfLevels)
 			{
-				//Win();
-                LoadLevel(0);
+				Win();
+                //LoadLevel(0);
 			}
 			else
 			{
@@ -170,6 +170,7 @@ namespace Assets.Scripts
 		private void Win()
 		{
 			print("You win the game!");
+            //SceneManager.LoadScene("WinScreen");
 		}
 
 		private void LoadLevel(int number)
