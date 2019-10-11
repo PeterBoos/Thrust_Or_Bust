@@ -190,13 +190,13 @@ namespace Assets.Scripts
 	            collisionsAreDisabled = !collisionsAreDisabled;
 	        }
 
-	        if (Input.GetKey(KeyCode.P))
-	        {
-	            //GetComponent<CameraShake>().ShakeCamera(20f, 1f);
+	        //if (Input.GetKey(KeyCode.P))
+	        //{
+	        //    //GetComponent<CameraShake>().ShakeCamera(20f, 1f);
 
-	            var camera = GameObject.FindGameObjectWithTag("MainCamera");
-	            camera.ShakeCamera(20f, 1f);
-	        }
+	        //    var camera = GameObject.FindGameObjectWithTag("MainCamera");
+	        //    camera.ShakeCamera(20f, 1f);
+	        //}
 	    }
 	}
 }
