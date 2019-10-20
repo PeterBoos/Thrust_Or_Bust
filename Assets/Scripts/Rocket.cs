@@ -119,7 +119,10 @@ namespace Assets.Scripts
 			{
 				audioSource.PlayOneShot(MainEngine);
 			}
-            MainEngineParticles.Play();
+			if (!MainEngineParticles.isPlaying)
+			{
+				MainEngineParticles.Play();
+			}            
 		}
 
 		private void RespondToRotateInput()
