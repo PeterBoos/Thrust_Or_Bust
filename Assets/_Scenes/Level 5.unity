@@ -218,6 +218,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91c4190bcdfaf4c408af8c0847556e0f, type: 3}
+--- !u!1 &73118292 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1753474065695382, guid: 91c4190bcdfaf4c408af8c0847556e0f,
+    type: 3}
+  m_PrefabInstance: {fileID: 73118291}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &73118293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 73118292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f1e0df4d6417746a589961e1df694c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1378083908}
+  smoothSpeed: 0.01
+  offset: {x: 0, y: 0, z: -10}
 --- !u!1001 &172310850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -480,6 +501,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 453bc1a8b15603847a27f0dff25f88f1, type: 3}
+--- !u!4 &1378083908 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4740045803255924, guid: 453bc1a8b15603847a27f0dff25f88f1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1378083907}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1588123266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -618,10 +645,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1798205458902024, guid: fc10be5df34d6f94fb5d0bb9e30ca80d, type: 3}
-      propertyPath: m_Name
-      value: Directional Light
-      objectReference: {fileID: 0}
     - target: {fileID: 4094415907518992, guid: fc10be5df34d6f94fb5d0bb9e30ca80d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 51.8
@@ -653,6 +676,10 @@ PrefabInstance:
     - target: {fileID: 4094415907518992, guid: fc10be5df34d6f94fb5d0bb9e30ca80d, type: 3}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1798205458902024, guid: fc10be5df34d6f94fb5d0bb9e30ca80d, type: 3}
+      propertyPath: m_Name
+      value: Directional Light
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc10be5df34d6f94fb5d0bb9e30ca80d, type: 3}

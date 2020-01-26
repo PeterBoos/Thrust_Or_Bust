@@ -33,6 +33,7 @@ namespace Assets.Scripts
 			rigidBody = GetComponent<Rigidbody>();
 			audioSource = GetComponent<AudioSource>();
 			NumberOfLevels = SceneManager.sceneCountInBuildSettings;
+			MainEngineParticles.Stop();
 		}
 	
 		// Update is called once per frame
